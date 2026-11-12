@@ -175,6 +175,9 @@ def render(w, h):
             elif t > 1.0: t = 1.0
             vg = 1.0 - 0.28 * t * t * (3 - 2 * t)
             rr = r * vg; gg = g * vg; bb = b * vg
+            # --- dither: break 8-bit banding in the smooth dark nebula ---
+            dith = (_hash(xi, y, 5) - 0.5) / 255.0
+            rr += dith; gg += dith; bb += dith
             i = row + xi * 3
             buf[i] = 255 if rr > 1.0 else (0 if rr < 0.0 else int(rr * 255))
             buf[i + 1] = 255 if gg > 1.0 else (0 if gg < 0.0 else int(gg * 255))
